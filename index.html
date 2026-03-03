@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<title>Checkout Inteligente</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+    background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container {
+    background: white;
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+    width: 350px;
+    text-align: center;
+}
+
+h2 {
+    margin-bottom: 25px;
+    color: #333;
+}
+
+label {
+    display: block;
+    text-align: left;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+    transition: 0.3s;
+}
+
+input[type="text"]:focus {
+    border-color: #ff758c;
+    outline: none;
+    box-shadow: 0 0 5px rgba(255, 117, 140, 0.5);
+}
+
+.checkbox-area {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    gap: 8px;
+    font-weight: normal;
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    background: #ff758c;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    background: #ff5e78;
+    transform: scale(1.03);
+}
+
+#resultado {
+    margin-top: 20px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+    <h2>🛒 Checkout Inteligente</h2>
+
+    <label>Preço:</label>
+    <input type="text" id="preco" placeholder="Ex: 125.50">
+
+    <label>Quantidade:</label>
+    <input type="text" id="qtd" placeholder="Ex: 3">
+
+    <div class="checkbox-area">
+        <input type="checkbox" id="cupom">
+        <span>Aplicar cupom de 10%</span>
+    </div>
+
+    <button onclick="processarCompra()">Calcular Total</button>
+
+    <h3 id="resultado"></h3>
+</div>
+
+<script>
+function processarCompra() {
+
+    console.log("🔹 ===== INÍCIO DO PROCESSAMENTO =====");
+
+    const inputPreco = document.getElementById("preco").value.trim();
+    const inputQtd = document.getElementById("qtd").value.trim();
+    const cupom = document.getElementById("cupom").checked;
+
+    console.log("1️⃣ Valores capturados (STRING):");
+    console.log("Preço:", inputPreco, "| Tipo:", typeof inputPreco);
+    console.log("Quantidade:", inputQtd, "| Tipo:", typeof inputQtd);
+    console.log("Cupom:", cupom, "| Tipo:", typeof cupom);
+
+    // Validação campo vazio
+    if (!inputPreco || !inputQtd) {
+        console.log("⚠️ Erro: Campo vazio detectado.");
+        document.getElementById("resultado").innerText 
+            "⚠️ Preencha todos os campos!";
+        return;
+    }
+
+    const preco = parseFloat(inputPreco);
+    const quantidade = parseInt(inputQtd);
+
+    console.log("2️⃣ Após CASTING:");
+    console.log("Preço convertido:", preco, "| Tipo:", typeof preco);
+    console.log("Quantidade convertida:", quantidade, "| Tipo:", typeof quantidade);
+
+    // Validação numérica
+    if (isNaN(preco) || isNaN(quantidade)) {
+        console.log("❌ Erro: Valor inválido (NaN).");
+        document.getElementById("resultado").innerText =
+            "❌ Preço e Quantidade devem ser números válidos!";
+        return;
+    }
+
+    console.log("3️⃣ Iniciando cálculo...");
+    let subtotal = preco * quantidade;
+    console.log("Subtotal (preço x quantidade):", subtotal);
+
+    if (cupom) {
+        console.log("4️⃣ Cupom aplicado: desconto de 10%");
+        subtotal *= 0.9;
+        console.log("Novo subtotal com desconto:", subtotal);
+    } else {
+        console.log("4️⃣ Cupom não aplicado.");
+    }
+
+    const totalFormatado = subtotal.toLocaleString("pt-BR", {
+        style: "currency",
+        currency: "BRL"
+    });
+
+    console.log("5️⃣ Total formatado:", totalFormatado);
+    console.log("🔹 ===== FIM DO PROCESSAMENTO =====");
+
+    document.getElementById("resultado").innerText =
+        "TOTAL FINAL: " + totalFormatado;
+}
+</script>
+
+</body>
+</html>
